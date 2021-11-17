@@ -1,3 +1,6 @@
 import pygame
-import constant
+import constants.main as constants
+
+
+
 
