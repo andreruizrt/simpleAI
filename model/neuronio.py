@@ -1,6 +1,6 @@
 class Neuronio:
   def __init__(self):
-    self.Peso = 0.0
-    self.Erro = 0.0
-    self.Saida = 0.0
-    self.QuantidadeLigacoes = 0
+    self.peso = 0.0
+    self.erro = 0.0
+    self.saida = 0.0
+    self.quantidadeLigacoes = 0
