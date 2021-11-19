@@ -1,21 +1,27 @@
 from numpy.random.mtrand import randint
 from numpy import random
 
-from camada import Camada
-from neuronio import Neuronio
+from model.camada import Camada
+from model.neuronio import Neuronio
 
 TAXA_APRENDIZADO = 0.1
 TAXA_PESO_INICIAL = 1.0
 BIAS = 1
 class RedeNeural:
-
     def __init__(
         self,
-        camadaEntrada=Camada(),
-        camadaEscondida=Camada(),
-        camadaSaida=Camada(),
-        quantidadeEscondidas=0
+        camadaEntrada: Camada = Camada(),
+        camadaEscondida: list = list(),
+        camadaSaida: Camada = Camada(),
+        quantidadeEscondidas: int = 0
     ):
+        """
+        Cria rede neural
+        :param camadaEntrada (Camada, optional): [description]. Defaults to Camada().
+        :param camadaEscondida (list, optional): [description]. Defaults to list().
+        :param camadaSaida (Camada, optional): [description]. Defaults to Camada().
+        :param quantidadeEscondidas (int, optional): [description]. Defaults to 0.
+        """
         self.camadaEntrada = camadaEntrada
         self.camadaEscondida = camadaEscondida
         self.camadaSaida = camadaSaida
@@ -116,14 +122,13 @@ class RedeNeural:
             rede.camadaEscondida.neuronios[i].erro = soma * self.reluDx(rede.camadaEscondida.neuronios[i].saida)
     """
 
-    def RNA_CriarNeuronio(self, quantidadeLigacoes=0):
+    def RNA_CriarNeuronio(self, quantidadeLigacoes: int = 0):
         """
         Funcao que cria um neuronio
         :param neuron: Neuronio
         :param quantidadeLigacoes: quantidade de ligações que o neuronio terá
         """
-        neuron = Neuronio()
-        neuron.quantidadeLigacoes = quantidadeLigacoes
+        neuron = Neuronio(quantidadeLigacoes)
         neuron.peso = [0.0] * quantidadeLigacoes
         
         for i in range(quantidadeLigacoes):
@@ -141,7 +146,7 @@ class RedeNeural:
                             qtdNeuroniosEscondidos, qtdNeuroniosSaida):
         """
         Funcao que cria uma rede neural
-        :param quantidadeEscondidas: quantidade de neuronios na camada escondida
+        :param quantidadeEscondidas: quantidade de camadas escondidas
         :param qtdNeuroniosEntrada: quantidade de neuronios na camada de entrada
         :param qtdNeuroniosEscondidos: quantidade de neuronios na camada escondida
         :param qtdNeuroniosSaida: quantidade de neuronios na camada de saida
@@ -152,7 +157,7 @@ class RedeNeural:
         
         rede = RedeNeural()
         rede.camadaEntrada = Camada(qtdNeuroniosEntrada)
-        rede.camadaEntrada.neuronios = [Neuronio()] * qtdNeuroniosEntrada
+        rede.camadaEntrada.neuronios = [Neuronio(qtdNeuroniosEntrada)] * qtdNeuroniosEntrada
         
         for i in range(qtdNeuroniosEntrada):
             rede.camadaEntrada.neuronios[i].saida = 1.0
@@ -177,17 +182,134 @@ class RedeNeural:
             rede.camadaSaida.neuronios[i] = self.RNA_CriarNeuronio(qtdNeuroniosEscondidos)
                 
         print("Criada uma rede neural com:\n\n1 Camada de entrada com", 
-              qtdNeuroniosEntrada - 1,"neuronio(s) + 1 BIAS.\n",
-              quantidadeEscondidas,"Camada(s) escondida(s), cada uma com",
-              qtdNeuroniosEscondidos - 1, "neuronio(s) + 1 BIAS.\n1  Camada de saida com",
-              qtdNeuroniosSaida,"neuronio(s).\n\n")
+              qtdNeuroniosEntrada - 1,"neuronio(s) + 1 BIAS.")
+        print(quantidadeEscondidas,"Camada(s) escondida(s), cada uma com",
+              qtdNeuroniosEscondidos - 1, "neuronio(s) + 1 BIAS.")
+        print("1 Camada de saida com", qtdNeuroniosSaida,"neuronio(s).\n\n")
+        print("#"*30)
+        
+        print(rede.camadaEntrada)
+        for i in rede.camadaEntrada.neuronios:
+            print("\t", i)
+        print("#"*30)
+        
+        for i in range(quantidadeEscondidas):
+            print(rede.camadaEscondida[i])
+            for j in rede.camadaEscondida[i].neuronios:
+                print("\t", j)
+        print("#"*30)
+        
+        print(rede.camadaSaida)
+        for i in rede.camadaSaida.neuronios:
+            print("\t", i)
+        print("#"*30)
                 
         return rede
     
+    def RNA_DestruirRedeNeural(self, rede):
+        """
+        Funcao que destroi rede neural
+        :param rede: rede neural que será destruida
+        """
+        rede.camadaEntrada = None
+        rede.camadaEscondida = None
+        rede.camadaSaida = None
+        
+        # for i in range(rede.camadaEntrada.quantidadeNeuronios):
+        #     rede.camadaEntrada.neuronios[i] = None
+            
+        # for i in range(rede.quantidadeEscondidas):
+        #     for j in range(rede.camadaEscondida[i].quantidadeNeuronios):
+        #         rede.camadaEscondida[i].neuronios[j].peso = None
+        #         rede.camadaEscondida[i].neuronios[j].erro = None
+        #         rede.camadaEscondida[i].neuronios[j].saida = 0.0
+                
+        # for i in range(rede.camadaSaida.quantidadeNeuronios):
+        #     rede.camadaSaida.neuronios[i].peso = []
+        #     rede.camadaSaida.neuronios[i].erro = 0.0
+        #     rede.camadaSaida.neuronios[i].saida = 0.0
+        
+        print("Rede neural destruida.\n Rede info: ", rede)
+            
+        return rede
+    
+    def RNA_CarregarRede(self, stringRede):
+        """
+        Funcao que carrega uma rede neural
+        :param stringRede: caminho para arquivo da rede neural
+        """
+        arq = open(stringRede, "rb")
+        pass
+    
+    def RNA_SalvarRede(self, stringRede, rede):
+        """
+        Funcao que salva uma rede neural
+        :param stringRede: caminho para arquivo da rede neural
+        :param rede: rede neural que será salva
+        """
+        arq = open(stringRede, "w")
+        if (arq):
+            arq.write("QTD_CAMADAS_ESCONDIDAS="+ str(rede.quantidadeEscondidas) + "\n")
+            arq.write("QTD_NEURONIOS_ENTRADA="+ str(rede.camadaEntrada.quantidadeNeuronios) + "\n")
+            arq.write("QTD_NEURONIOS_ESCONDIDA=" + str(rede.camadaEscondida[0].quantidadeNeuronios) + "\n")
+            arq.write("QTD_NEURONIOS_SAIDA=" + str(rede.camadaSaida.quantidadeNeuronios) + "\n")
+            
+            for i in range(rede.quantidadeEscondidas):
+                for j in range(rede.camadaEscondida[i].quantidadeNeuronios):
+                    for k in range(rede.camadaEscondida[i].neuronios[j].quantidadeLigacoes):
+                        arq.write("PESO_" + str(k) + "_NEURONIO_" + str(j) + "_ESCONDIDA_" + str(i) + "="+ str(rede.camadaEscondida[i].neuronios[j].peso[k]) + "\n")
+        
+            for i in range(rede.camadaSaida.quantidadeNeuronios):
+                for j in range(rede.camadaSaida.neuronios[i].quantidadeLigacoes):
+                    arq.write("PESO" + str(j) + "_NEURONIO_" + str(i) + "_SAIDA="+ str(rede.camadaSaida.neuronios[i].peso[j]) + "\n")
+                    
+            arq.close()
+        
+        # tentando salvar em arquivo de bytes, entretanto, não há conversão
+        # de float para bytes diretamente
+        # arq = open(stringRede, "wb")
+        # if (arq):
+        #     arq.write(rede.quantidadeEscondidas.to_bytes(4, byteorder='big'))
+        #     arq.write(rede.camadaEntrada.quantidadeNeuronios.to_bytes(4, byteorder='big'))
+        #     arq.write(rede.camadaEscondida[0].quantidadeNeuronios.to_bytes(4, byteorder='big'))
+        #     arq.write(rede.camadaSaida.quantidadeNeuronios.to_bytes(4, byteorder='big'))
+            
+        #     for i in range(rede.quantidadeEscondidas):
+        #         for j in range(rede.camadaEscondida[i].quantidadeNeuronios):
+        #             for k in range(rede.camadaEscondida[i].neuronios[j].quantidadeLigacoes):
+        #                 arq.write(str(rede.camadaEscondida[i].neuronios[j].peso[k]).to_bytes(4, byteorder='big'))
+        
+        #     for i in range(rede.camadaSaida.quantidadeNeuronios):
+        #         for j in range(rede.camadaSaida.neuronios[i].quantidadeLigacoes):
+        #             arq.write(rede.camadaSaida.neuronios[i].peso[j].to_bytes(4, byteorder='big'))
+                    
+        #     arq.close()
+    
+    def RNA_ImprimirPesos(self, rede):
+        pass
+    
+    def InicializarGeradorAleatorio(self, seed):
+        """
+        Inicializa gerador randomico
+        :param seed: valor de seed
+        return: gerador randomico
+        """
+        return random.seed(seed)
+    
     def main(self):
-        redePrincipal = RedeNeural()
-        redePrincipal = self.RNA_CriarRedeNeural(30, 784, 30, 10)
+        gerador = self.InicializarGeradorAleatorio(1)
         
+        Andre = self.RNA_CriarRedeNeural(5, 2, 10, 1)
         
+        # for i in range(1000):
+        #     print("\n")
+        #     self.RNA_BackPropagation(Andre, [0,0], [0])
+        #     self.RNA_BackPropagation(Andre, [1,1], [1])
+        #     self.RNA_BackPropagation(Andre, [0,1], [1])
+        #     self.RNA_BackPropagation(Andre, [1,0], [0])
         
-RedeNeural().main()
+        self.RNA_SalvarRede("/home/andreruxx/Desktop/simpleAI/rede/rede", Andre)
+        Andre = self.RNA_DestruirRedeNeural(Andre)
+        
+        return 0
+        
