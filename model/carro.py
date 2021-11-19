@@ -1,23 +1,25 @@
+from numpy import double
 import constants.main as constants
-
 class Carro:
-  def __init__(self):
-    self.X, self.Y = 0.0, 0.0
-    self.VX, self.VY = 0.0, 0.0
-    self.Angulo = 0.0
-    self.Velocidade = 0.0
-    self.Colidiu = False
-    self.Queimado = False
-    
-    self.Sprite = 0
-    self.DistanciaSensores = list()
-    self.DistanciaSensores[constants.CAR_BRAIN_QTD_INPUT-1] = 0.0
+    def __init__(self, x, y: double, vx, vy: double,
+                 angulo: double, velocidade: double,
+                 colidiu: bool, queimado: bool,
+                 sprint: bool, tamanhoDNA: int,
+                 DNA: double, fitness: double
+                 ):
+        self.x: double = x
+        self.y: double = y
+        self.vx: double = vx
+        self.vy: double = vy
+        self.angulo: double = angulo
+        self.velocidade: double = velocidade
+        self.colidiu: bool = False
+        self.queimado: bool = False
 
-    self.TamanhoDNA = 0
-    self.DNA = 0.0
-    self.Fitness = 0.0
+        self.sprite: int = 0
+        self.distanciaSensores: list() = list()
+        self.distanciaSensores[constants.CAR_BRAIN_QTD_INPUT-1] = 0.0
 
-
-
-
-
+        self.tamanhoDNA: int = 0
+        self.DNA: double = 0.0
+        self.fitness: double = 0.0
