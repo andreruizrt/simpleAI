@@ -1,2 +1,6 @@
 # build files
 __pycache__
+#Arquivo de dados
+rede/
+# images
+images/
