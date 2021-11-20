@@ -1,5 +1,6 @@
 from numpy import double
 import constants.main as constants
+import model.redeNeural as rn
 class Carro:
     def __init__(self, x, y: double, vx, vy: double,
                  angulo: double, velocidade: double,
@@ -23,3 +24,5 @@ class Carro:
         self.tamanhoDNA: int = 0
         self.DNA: double = 0.0
         self.fitness: double = 0.0
+
+        self.cerebro: rn.RedeNeural = rn.RedeNeural()
