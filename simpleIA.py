@@ -2,13 +2,14 @@ from numpy import double
 import math
 
 import pygame
+from model.jogo import Jogo
 
 import model.redeNeural as rn
 import model.camada as camada
 import model.carro as carro
-import model.jogo as jogo
 
 import constants.main as constants
+from log.simpleLog import logging
 
 
 class Animation2:
@@ -49,7 +50,8 @@ class Zona:
         self.alturaY: double = 0.0
 
 
-game = jogo.Jogo()
+
+game = Jogo()
 
 paredes: list = [0.0]*constants.LARGURA_CENARIO*constants.ALTURA_CENARIO
 paredesVirtual: list = [0.0]*constants.LARGURA_CENARIO*constants.ALTURA_CENARIO
@@ -148,6 +150,7 @@ def aplicarSensores(self, carro: carro.Carro(), entrada: double):
     :param entrada: Entrada
     """
     for i in range(constants.CAR_BRAIN_QTD_INPUT-1):
+        dist = 30
         x1 = carro.x
         y1 = carro.y
         angulo = (double)(carro.angulo - 90.0 + (i*180.0) /
@@ -286,7 +289,7 @@ def desenharRedeNeural(self, x: int, y: int, largura: int, altura: int):
                                             x=(x + largura - 130),
                                             y=(temp - 0*escalaAltura - 5 - constants.DESLOCAMENTO_NEURONIOS))
 
-    self.textoRe = game.desenharTexto("R�", tamanho=20,
+    self.textoRe = game.desenharTexto("RÉ", tamanho=20,
                                       x=(x + largura - 130),
                                       y=(temp - 1*escalaAltura - 5 - constants.DESLOCAMENTO_NEURONIOS))
 
@@ -565,6 +568,158 @@ def desenharFrameExplosoes():
             #                listaExplosoes[i].angulo)
 
 
-
 def desenhar():
+    pass
+
+
+# adicionais configurações iniciais
+
+def criar_timer(self):
+    pass
+
+def inicializar_gerador_aleatorio(self):
+    pass
+
+def preencher_matriz_colisao(self):
+    pass
+
+def preencher_matriz_distancias(self):
+    pass
+
+def inicializar_obstaculos(self):
+    pass
+
+def criar_sprite(self, nome_arquivo: str, retirar_fundo: int = 0):
+    logging.info("Criando sprite: ", nome_arquivo)
+    pass
+
+def inicializar_sprites(self):
+    logging.info("Inicializando sprites")
+    pass
+
+def inicializar_zonas(self):
+    pass
+
+def criar_ponto_desenho_colisao(self):
+    pass
+
+def alocar_carros(self):
+    pass
+
+def criar_fonte_normal(self):
+    pass
+
+def inicializar_nova_partida(self):
+    pass
+
+def atualizar_janela(self):
+    pass    
+        
+def verificar_teclas_usuario(self):
+    pass
+
+def tempoDecorrido(self, timer):
+    pass
+
+def movimentar_camera(self):
+    pass
+
+def controlar_carros(self):
+    pass
+
+def movimentar_carros(self):
+    pass
+
+def girar_obstaculos(self):
+    pass
+            
+def verificar_interacao_jogador(self):
+    pass
+
+def laser_destruidor(self):
+    pass
+
+def trocar_frame_explosoes(self):
+    pass
+
+def atualizar_opacidade_background(self):
+    pass
+
+def verificar_fim_partida(self):
+    pass
+
+def reiniciar_timer(timer):
+    pass
+
+
+def configuracoes_iniciais(self):
+    # TODO:
+    # criar_janela("Rede Neural", 0)
+    game.criar_janela(nome_janela="Rede Neural")
+
+    inicializar_sprites()
+    timerGeral = criar_timer()
+
+    inicializar_gerador_aleatorio()
+    preencher_matriz_colisao()
+    logging.info("Matriz de colisão preenchida")
+    preencher_matriz_distancias()
+    logging.info("Matriz de distancias preenchida")
+
+    inicializar_obstaculos()
+    inicializar_zonas()
+
+    criar_ponto_desenho_colisao()
+
+    alocar_carros()
+
+    fonte = criar_fonte_normal()
+
+    distanciaRecorde = 0
+    geracao = 0
+    
+    inicializar_nova_partida()
+
+
+def main(self):
+    configuracoes_iniciais()
+        
+    while game.rodando:
+        atualizar_janela()
+        verificar_teclas_usuario()
+
+        if(tempoDecorrido(timerGeral) >= periodo):
+            movimentar_camera()
+
+            controlar_carros()
+            movimentar_carros()
+
+            girar_obstaculos()
+
+            verificar_interacao_jogador()
+
+            laser_destruidor()
+
+            trocar_frame_explosoes()
+            atualizar_opacidade_background()
+
+            verificar_fim_partida()
+
+            desenhar()
+
+            reiniciar_timer(timerGeral)
+
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.QUIT:
+    #             self.rodando = False
+    #     self.clock.tick(60)
+    #     pygame.display.flip()
+    # pygame.quit()
+
+    return 0
+
+
+
+
+
     
