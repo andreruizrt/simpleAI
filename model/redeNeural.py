@@ -2,16 +2,9 @@ from numpy import random
 
 import pickle
 
+from log.simpleLog import logging
 from model.camada import Camada
 from model.neuronio import Neuronio
-
-import logging
-
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s - %(levelname)s - %(message)s')
 
 TAXA_APRENDIZADO = 0.1
 TAXA_PESO_INICIAL = 1.0
@@ -337,7 +330,7 @@ class RedeNeural:
     def RNA_ImprimirPesos(self, rede):
         """
         Funcao que imprime os pesos da rede neural
-        :param rede: rede neural que será imprimida
+        :param rede: rede neural que será impressa
         """
         logging.info("Iniciando impressao dos pesos da rede neural")
         pass
