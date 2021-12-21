@@ -1,21 +1,32 @@
 import pygame
-from pygame import font
+from log.simpleLog import logging
 import constants.main as constants
-
-pygame.init()
-pygame.font.init()
 
 class Jogo:
     def __init__(self):
+        logging.info("Jogo::construtor")
+        self.clock = pygame.time.Clock()
+        self.font = pygame.font.SysFont("Arial", 18)
+        self.rodando = True
+
+
+    def update_fps(self):
+        fps = str(int(self.clock.get_fps()))
+        fps_text = self.font.render(fps, 1, pygame.Color("coral"))
+        return fps_text
+
+    
+    def criar_janela(self, nome_janela ):
         self.tela = pygame.display.set_mode(
             (constants.LARGURA_CENARIO, constants.ALTURA_CENARIO))
-        pygame.display.set_caption("Rede Neural")
+        pygame.display.set_caption(nome_janela)
         pygame.display.flip()
-        self.rodando = True
+
+
 
     # TODO: passar fonte por parametro
     # fonte=pygame.font.get_default_font(),
-    def desenharTexto(self,
+    def desenhar_texto(self,
                       texto,
                       tamanho=45,
                       cor=(0, 0, 0),
@@ -29,6 +40,7 @@ class Jogo:
         :param y: Posição y do texto.
         :param align: Alinhamento do texto.
         """
+        logging.info("desenhar_texto")
         pygame.font.init()
         fonteRender = pygame.font.SysFont(
             "/home/andreruxx/Desktop/simpleAI/fonts/arial.ttf", tamanho)
@@ -55,10 +67,4 @@ class Jogo:
         
         return textSurface, textRect
 
-    def inicializar(self):
-        while self.rodando:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.rodando = False
-            pygame.display.flip()
-        pygame.quit()
+   
